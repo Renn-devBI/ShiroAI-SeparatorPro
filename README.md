@@ -1,4 +1,4 @@
-# 🎵 ShiroAI Separator Pro
+# ShiroAI Separator Pro
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)  
 [![Pygame](https://img.shields.io/badge/Pygame-2.0+-green.svg)](https://www.pygame.org/)  
@@ -70,10 +70,7 @@ Progress bar & log real-time Output:
 - Bisa pilih: hanya vokal, hanya instrumen, atau keduanya
 
 🖼️ Preview Aplikasi
-<video width="700" controls>
-  <source src="ShiroAIvoc.mp4" type="video/mp4">
-  Browser kamu tidak support video.
-</video>
+![Preview](ShiroAIvoc.gif)
 
 - 🛠️ Fitur
 - 🎧 Audio Preview (Vocals & Instruments)
