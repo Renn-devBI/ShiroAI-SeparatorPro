@@ -72,17 +72,13 @@ Progress bar & log real-time Output:
 ## 🖼️ Preview Aplikasi
 https://github.com/user-attachments/assets/6ab53196-76e1-4409-9baa-adb15dfd8791
 
+- Audio Preview (Vocals & Instruments)
+- Kontrol volume + seek bar
+- Simpan hasil pemisahan
+- Log proses real-time
+- AI Vocal Separation dengan Spleeter
 
-
-- 🛠️ Fitur
-- 🎧 Audio Preview (Vocals & Instruments)
-- 🎚️ Kontrol volume + seek bar
-- 🌙 Dark/Light Theme
-- 💾 Simpan hasil pemisahan
-- 📋 Log proses real-time
-- 🚀 AI Vocal Separation dengan Spleeter
-
-- 🗺️ Roadmap Pengembangan
+## 🗺️ Roadmap Pengembangan
  - _Support pemisahan 4/5 stems_
  - _Ekspor ke format lain (MP3, FLAC)_
  - _Playlist & batch processing_
@@ -90,6 +86,6 @@ https://github.com/user-attachments/assets/6ab53196-76e1-4409-9baa-adb15dfd8791
  - _Visualisasi spektrum audio_
  
 - **📜 Lisensi MIT.LICENSE**
-**👨‍💻 Author ShiroAI Development Team**
+- **👨‍💻 Author ShiroAI Development Team**
 
 [GitHub: @Renn-devBI]
