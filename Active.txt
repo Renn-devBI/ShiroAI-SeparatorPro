@@ -1,0 +1,30 @@
+py -3.10 -m venv env310 # Set Python 3.10
+python -m venv env310  # Buat environment baru
+env310\Scripts\activate  # Aktifkan environment
+deactivate # Deaktivasi environment
+# Cara pertama
+python -m pip install --upgrade pip
+pip install numpy==1.22.4 --only-binary :all:
+pip install scipy==1.8.1 --only-binary :all:
+pip install tensorflow
+
+# Cara kedua
+pip install spleeter==2.3.2
+pip uninstall -y flask werkzeug click typer spleeter
+pip install werkzeug==2.0.3
+pip install flask==2.0.3
+pip install yt-dlp numpy scipy soundfile librosa
+pip install flask yt-dlp spleeter librosa soundfile scipy requests tensorflow ffmpeg-python
+
+# Fix Numpy
+pip uninstall numpy -y
+pip cache purge
+pip install numpy==1.23.5 --no-binary numpy --no-cache-dir
+python -m pip install --pre --upgrade numpy==1.23.5
+
+pip install werkzeug
+pip install click
+pip install flask
+pip install typer
+pip install spleeter
+pip install yt-dlp numpy scipy soundfile librosa

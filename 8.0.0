@@ -1,0 +1,2 @@
+Requirement already satisfied: click in c:\users\shiro\downloads\yt-vocals\env310\lib\site-packages (8.1.8)
+Requirement already satisfied: colorama in c:\users\shiro\downloads\yt-vocals\env310\lib\site-packages (from click) (0.4.6)
