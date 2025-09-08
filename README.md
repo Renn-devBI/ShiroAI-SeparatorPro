@@ -64,7 +64,7 @@ Input: File audio (.mp3, .wav, .flac, dll.)
 Processing: Model 2-stems → memisahkan track jadi:
 - 🎤 Vocals (suara penyanyi)
 - 🎸 Instruments (musik/iringan)
-- 
+
 Progress bar & log real-time Output:
 - File hasil pemisahan disimpan ke .wav
 - Bisa pilih: hanya vokal, hanya instrumen, atau keduanya
