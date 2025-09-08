@@ -45,7 +45,7 @@ ShiroAI-Separator-Pro/
    cd ShiroAI-Separator-Pro
    ```
 
-2. **Buat virtual environment (disarankan)**
+2. **Create virtual environment (Opsional)**
  ```bash
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
@@ -59,7 +59,7 @@ venv\Scripts\activate      # Windows
    ```
    
 🧠 Cara Kerja AI
-Aplikasi ini menggunakan Deep Learning Spleeter (by Deezer) untuk memisahkan audio:
+Aplikasi ini menggunakan Deep Learning Spleeter untuk memisahkan audio:
 Input: File audio (.mp3, .wav, .flac, dll.)
 Processing: Model 2-stems → memisahkan track jadi:
 - 🎤 Vocals (suara penyanyi)
