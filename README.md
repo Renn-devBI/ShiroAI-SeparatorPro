@@ -70,7 +70,10 @@ Progress bar & log real-time Output:
 - Bisa pilih: hanya vokal, hanya instrumen, atau keduanya
 
 🖼️ Preview Aplikasi
-<div align="center"> <img src="https://iili.io/KJVonP2.png" alt="Preview Screenshot" width="700"/> <p><em>Modern UI dengan kontrol audio lengkap</em></p> </div>
+<video width="700" controls>
+  <source src="ShiroAIvoc.mp4" type="video/mp4">
+  Browser kamu tidak support video.
+</video>
 
 - 🛠️ Fitur
 - 🎧 Audio Preview (Vocals & Instruments)
