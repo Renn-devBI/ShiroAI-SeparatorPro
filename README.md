@@ -69,8 +69,12 @@ Progress bar & log real-time Output:
 - File hasil pemisahan disimpan ke .wav
 - Bisa pilih: hanya vokal, hanya instrumen, atau keduanya
 
-🖼️ Preview Aplikasi
-![Preview](ShiroAIvoc.gif)
+## 🖼️ Preview Aplikasi
+
+<div align="center">
+  <img src="ShiroAIvoc.gif" alt="Preview Video" width="700"/>
+  <p><em>Modern UI dengan kontrol audio lengkap</em></p>
+</div>
 
 - 🛠️ Fitur
 - 🎧 Audio Preview (Vocals & Instruments)
