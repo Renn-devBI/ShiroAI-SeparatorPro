@@ -72,8 +72,7 @@ Progress bar & log real-time Output:
 ## 🖼️ Preview Aplikasi
 
 <div align="center">
-  <img src="ShiroAIvoc.gif" alt="Preview Video" width="700"/>
-  <p><em>Modern UI dengan kontrol audio lengkap</em></p>
+  <img src="ShiroAIvoc.mp4" alt="Preview Video" width="700"/>
 </div>
 
 - 🛠️ Fitur
