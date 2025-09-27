@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShiroAI - Audio Separator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            color: #667eea;
+            margin-right: 10px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 50px 20px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: #764ba2;
+            background: rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 3.5em;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .upload-subtext {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        #audioFile {
+            display: none;
+        }
+
+        .file-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+            text-align: left;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .file-name i {
+            margin-right: 8px;
+            color: #667eea;
+        }
+
+        .file-size {
+            color: #666;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+        }
+
+        .file-size i {
+            margin-right: 8px;
+            color: #667eea;
+        }
+
+        .format-selector {
+            margin: 20px 0;
+        }
+
+        .format-selector h3 {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .format-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .format-option {
+            flex: 1;
+            max-width: 150px;
+        }
+
+        .format-option input[type="radio"] {
+            display: none;
+        }
+
+        .format-option label {
+            display: block;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+
+        .format-option input[type="radio"]:checked + label {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .process-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .process-btn i {
+            margin-right: 10px;
+        }
+
+        .process-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .process-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .progress {
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            margin-top: 10px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .status-message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-success i {
+            margin-right: 10px;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-error i {
+            margin-right: 10px;
+        }
+
+        .youtube-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .youtube-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .feature-comparison {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .feature-comparison h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .feature-comparison ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-comparison li {
+            padding: 8px 0;
+            color: #666;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .feature-comparison li i {
+            color: #28a745;
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+
+        /* Popup Maintenance */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #ff9800;
+        }
+
+        .popup-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .popup-message {
+            margin-bottom: 20px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .popup-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .popup-button:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .format-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .format-option {
+                max-width: 100%;
+            }
+            
+            .upload-area {
+                padding: 30px 15px;
+            }
+            
+            .upload-icon {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Popup Maintenance -->
+    <div class="popup-overlay" id="maintenancePopup">
+        <div class="popup-content">
+            <div class="popup-icon"><i class="fas fa-tools"></i></div>
+            <div class="popup-title">Maintenance Notice</div>
+            <div class="popup-message">
+                The YouTube Link feature is currently under maintenance and temporarily unavailable.
+                We're working hard to restore this functionality as soon as possible.
+                Please use the Upload Audio feature instead.
+            </div>
+            <button class="popup-button" onclick="closeMaintenancePopup()">Got It</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="logo">
+            <i class="fas fa-wave-square logo-icon"></i>
+            <h1>ShiroAI Separate</h1>
+        </div>
+        <p class="subtitle">Advanced Audio Vocal & Instrumental Separator</p>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('upload')">Upload Audio</button>
+            <button class="tab" onclick="switchTab('youtube')">YouTube Link</button>
+        </div>
+
+        <!-- Upload Tab -->
+        <div id="upload-tab" class="tab-content active">
+            <div class="feature-comparison">
+                <h3>Upload Audio Features:</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Process your own audio files directly</li>
+                    <li><i class="fas fa-check-circle"></i> No internet connection required for processing</li>
+                    <li><i class="fas fa-check-circle"></i> Uses your device's RAM and CPU</li>
+                    <li><i class="fas fa-check-circle"></i> Supports MP3, WAV, FLAC, M4A, AAC, OGG, WMA</li>
+                    <li><i class="fas fa-check-circle"></i> Maximum file size: 50MB</li>
+                    <li><i class="fas fa-check-circle"></i> Faster processing for local files</li>
+                </ul>
+            </div>
+
+            <div class="upload-area" onclick="document.getElementById('audioFile').click()">
+                <div class="upload-icon"><i class="fas fa-file-audio"></i></div>
+                <div class="upload-text">Click to select audio file</div>
+                <div class="upload-subtext">or drag and drop your audio file here</div>
+            </div>
+
+            <input type="file" id="audioFile" accept=".mp3,.wav,.flac,.m4a,.aac,.ogg,.wma">
+
+            <div class="file-info" id="fileInfo">
+                <div class="file-name"><i class="fas fa-file"></i> <span id="fileName"></span></div>
+                <div class="file-size"><i class="fas fa-database"></i> <span id="fileSize"></span></div>
+            </div>
+
+            <div class="format-selector">
+                <h3>Select Output Format:</h3>
+                <div class="format-options">
+                    <div class="format-option">
+                        <input type="radio" id="vocals" name="format" value="vocals">
+                        <label for="vocals"><i class="fas fa-microphone"></i> Vocals Only</label>
+                    </div>
+                    <div class="format-option">
+                        <input type="radio" id="instruments" name="format" value="instruments">
+                        <label for="instruments"><i class="fas fa-guitar"></i> Instruments Only</label>
+                    </div>
+                    <div class="format-option">
+                        <input type="radio" id="both" name="format" value="both" checked>
+                        <label for="both"><i class="fas fa-archive"></i> Both (ZIP)</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="process-btn" id="processBtn" onclick="processUploadedAudio()" disabled>
+                <i class="fas fa-cogs"></i> Separate Audio
+            </button>
+        </div>
+
+        <!-- YouTube Tab -->
+        <div id="youtube-tab" class="tab-content">
+            <div class="feature-comparison">
+                <h3>YouTube Features:</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Download and process YouTube videos</li>
+                    <li><i class="fas fa-check-circle"></i> Get video information and metadata</li>
+                    <li><i class="fas fa-check-circle"></i> Multiple output formats available</li>
+                    <li><i class="fas fa-check-circle"></i> Live preview and mixing capabilities</li>
+                    <li><i class="fas fa-check-circle"></i> Requires internet connection</li>
+                    <li><i class="fas fa-check-circle"></i> May take longer due to download time</li>
+                </ul>
+            </div>
+
+            <input type="text" class="youtube-input" id="youtubeUrl" placeholder="Enter YouTube URL here..." disabled>
+            
+            <div class="format-selector">
+                <h3>Select Output:</h3>
+                <div class="format-options">
+                    <div class="format-option">
+                        <input type="radio" id="yt-vocals" name="yt-format" value="vocal" disabled>
+                        <label for="yt-vocals"><i class="fas fa-microphone"></i> Vocals Only</label>
+                    </div>
+                    <div class="format-option">
+                        <input type="radio" id="yt-instruments" name="yt-format" value="nonvocal" disabled>
+                        <label for="yt-instruments"><i class="fas fa-guitar"></i> Instruments Only</label>
+                    </div>
+                    <div class="format-option">
+                        <input type="radio" id="yt-both" name="yt-format" value="both" checked disabled>
+                        <label for="yt-both"><i class="fas fa-archive"></i> Both (ZIP)</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="process-btn" onclick="showMaintenancePopup()">
+                <i class="fas fa-cogs"></i> Process YouTube Audio
+            </button>
+        </div>
+
+        <div class="progress" id="progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Processing audio...</div>
+        </div>
+
+        <div class="status-message" id="statusMessage"></div>
+    </div>
+
+    <script>
+        let uploadedFile = null;
+
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to selected tab
+            event.target.classList.add('active');
+            
+            // Show maintenance popup if YouTube tab is selected
+            if (tabName === 'youtube') {
+                showMaintenancePopup();
+            }
+        }
+
+        // Popup functions
+        function showMaintenancePopup() {
+            document.getElementById('maintenancePopup').style.display = 'flex';
+        }
+
+        function closeMaintenancePopup() {
+            document.getElementById('maintenancePopup').style.display = 'none';
+            // Switch back to upload tab after closing popup
+            switchTab('upload');
+        }
+
+        // File upload handling
+        document.getElementById('audioFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFileSelect(file);
+            }
+        });
+
+        // Drag and drop handling
+        const uploadArea = document.querySelector('.upload-area');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            uploadArea.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            uploadArea.classList.remove('dragover');
+        }
+
+        uploadArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        }
+
+        function handleFileSelect(file) {
+            const allowedTypes = ['audio/mpeg', 'audio/wav', 'audio/flac', 'audio/mp4', 'audio/aac', 'audio/ogg', 'audio/x-ms-wma'];
+            const maxSize = 50 * 1024 * 1024; // 50MB
+
+            if (!allowedTypes.some(type => file.type.startsWith('audio/')) && 
+                !file.name.match(/\.(mp3|wav|flac|m4a|aac|ogg|wma)$/i)) {
+                showMessage('Please select a valid audio file.', 'error');
+                return;
+            }
+
+            if (file.size > maxSize) {
+                showMessage('File size exceeds 50MB limit.', 'error');
+                return;
+            }
+
+            uploadedFile = file;
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileInfo').style.display = 'block';
+            document.getElementById('processBtn').disabled = false;
+            
+            hideMessage();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function processUploadedAudio() {
+            if (!uploadedFile) {
+                showMessage('Please select an audio file first.', 'error');
+                return;
+            }
+
+            const selectedFormat = document.querySelector('input[name="format"]:checked').value;
+            const formData = new FormData();
+            formData.append('audio', uploadedFile);
+            formData.append('format', selectedFormat);
+
+            showProgress('Uploading and processing audio...');
+            document.getElementById('processBtn').disabled = true;
+
+            fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => Promise.reject(err));
+                }
+                
+                // Handle file download
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = 'separated_audio';
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                    if (filenameMatch && filenameMatch[1]) {
+                        filename = filenameMatch[1].replace(/['"]/g, '');
+                    }
+                }
+                
+                return response.blob().then(blob => ({ blob, filename }));
+            })
+            .then(({ blob, filename }) => {
+                // Create download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                hideProgress();
+                showMessage('Audio separated successfully! Download started.', 'success');
+                document.getElementById('processBtn').disabled = false;
+            })
+            .catch(error => {
+                hideProgress();
+                document.getElementById('processBtn').disabled = false;
+                
+                if (error.message) {
+                    showMessage(error.message, 'error');
+                } else {
+                    showMessage('Processing failed. Please try again.', 'error');
+                }
+                console.error('Error:', error);
+            });
+        }
+
+        function showProgress(message) {
+            document.getElementById('progress').style.display = 'block';
+            document.getElementById('progressText').textContent = message;
+            hideMessage();
+            
+            // Simulate progress
+            let progress = 0;
+            const progressFill = document.getElementById('progressFill');
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                progressFill.style.width = progress + '%';
+            }, 500);
+            
+            // Store interval for cleanup
+            window.currentProgressInterval = interval;
+        }
+
+        function hideProgress() {
+            document.getElementById('progress').style.display = 'none';
+            document.getElementById('progressFill').style.width = '0%';
+            
+            if (window.currentProgressInterval) {
+                clearInterval(window.currentProgressInterval);
+            }
+        }
+
+        function showMessage(message, type) {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.innerHTML = type === 'success' 
+                ? '<i class="fas fa-check-circle"></i> ' + message 
+                : '<i class="fas fa-exclamation-circle"></i> ' + message;
+            statusMessage.className = `status-message status-${type}`;
+            statusMessage.style.display = 'block';
+        }
+
+        function hideMessage() {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.style.display = 'none';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check server status on load
+            checkServerStatus();
+            
+            // Disable YouTube tab elements
+            document.getElementById('youtubeUrl').disabled = true;
+            document.querySelectorAll('input[name="yt-format"]').forEach(input => {
+                input.disabled = true;
+            });
+        });
+
+        function checkServerStatus() {
+            fetch('/api/upload/status')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Server status:', data.server_info);
+                }
+            })
+            .catch(error => {
+                console.log('Could not check server status:', error);
+            });
+        }
+    </script>
+</body>
+</html>
